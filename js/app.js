@@ -3,9 +3,9 @@ var app = angular.module('Jueguito', []);
 
 
 // Minificación Segura
-app.controller('Controlador', ['$scope', function($scope) {
+app.controller('Controlador', ['scope', function(scope) {
 
-	$scope.message = 'todo bien!';
+	scope.message = 'todo bien!';
 
 	app.directive('jueguito', function(jueguitoEsquema) {
 		return {
