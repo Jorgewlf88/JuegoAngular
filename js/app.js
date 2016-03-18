@@ -1,5 +1,19 @@
 var app = angular.module('Jueguito', []);
 
+
+// Minificación Segura
+Controlador.$inject = ['$scope', '$route', 'Item', 'items', 'utils', 'shade'];
+
+angular.module('Jueguito')
+	.controller('Controlador', Controlador);
+
+function Controlador($scope,$route,Item,items,utils,shade) {
+	// do something
+}
+
+
+
+
 app.directive('jueguito', function(jueguitoEsquema) {
 	return {
 		restrict: 'AE',
