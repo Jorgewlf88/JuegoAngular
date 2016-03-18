@@ -1,95 +1,86 @@
 var app = angular.module('Jueguito', []);
 
+app.directive('jueguito', function(jueguitoEsquema) {
+	return {
+		restrict: 'AE',
+		scope: {},
+		templateUrl: 'plantillas/plantilla.html',
+		link: function(scope, elem, attrs) {
+			scope.empezar = function() {
+				scope.id = 0;
+				scope.seAcabo = false;
+				scope.Avance = true;
+				scope.obtienePregunta();
+			};
 
+			scope.reset = function() {
+				scope.Avance = false;
+				scope.puntaje = 0;
+			}
 
-// Minificación Segura
-app.controller('Controlador', ['scope', function(scope) {
+			scope.obtienePregunta = function() {
+				var q = jueguitoEsquema.obtienePregunta(scope.id);
+				if(q) {
+					scope.pregunta = q.pregunta;
+					scope.opciones = q.opciones;
+					scope.respuesta = q.respuesta;
+					scope.modoRespuesta = true;
+				} else {
+					scope.seAcabo = true;
+				}
+			};
 
-	scope.message = 'todo bien!';
+			scope.checkRespuesta = function() {
+				if(!$('input[name=respuesta]:checked').length) return;
 
-	app.directive('jueguito', function(jueguitoEsquema) {
-		return {
-			restrict: 'AE',
-			scope: {},
-			templateUrl: 'plantillas/plantilla.html',
-			link: function(scope, elem, attrs) {
-				scope.empezar = function() {
-					scope.id = 0;
-					scope.seAcabo = false;
-					scope.Avance = true;
-					scope.obtienePregunta();
-				};
+				var ans = $('input[name=respuesta]:checked').val();
 
-				scope.reset = function() {
-					scope.Avance = false;
-					scope.puntaje = 0;
+				if(ans == scope.opciones[scope.respuesta]) {
+					scope.puntaje++;
+					scope.respCorrecta = true;
+				} else {
+					scope.respCorrecta = false;
 				}
 
-				scope.obtienePregunta = function() {
-					var q = jueguitoEsquema.obtienePregunta(scope.id);
-					if(q) {
-						scope.pregunta = q.pregunta;
-						scope.opciones = q.opciones;
-						scope.respuesta = q.respuesta;
-						scope.modoRespuesta = true;
-					} else {
-						scope.seAcabo = true;
-					}
-				};
+				scope.modoRespuesta = false;
+			};
 
-				scope.checkRespuesta = function() {
-					if(!$('input[name=respuesta]:checked').length) return;
+			scope.siguientePregunta = function() {
+				scope.id++;
+				scope.obtienePregunta();
+			}
 
-					var ans = $('input[name=respuesta]:checked').val();
+			scope.reset();
+		}
+	}
+});
 
-					if(ans == scope.opciones[scope.respuesta]) {
-						scope.puntaje++;
-						scope.respCorrecta = true;
-					} else {
-						scope.respCorrecta = false;
-					}
+app.factory('jueguitoEsquema', function() {
+	var preguntas = [
+		{
+			pregunta: "Cuánto es 2 + 2 ?",
+			opciones: ["3", "8", "4", "1"],
+			respuesta: 2
+		},
+		{
+			pregunta: "Cuánto es 5 + 5 ?",
+			opciones: ["98", "10", "2", "9"],
+			respuesta: 1
+		},
+		{
+			pregunta: "Cuánto vale Pi?",
+			opciones: ["1", "0", "89798", "3,1416"],
+			respuesta: 3
+		}
+	];
 
-					scope.modoRespuesta = false;
-				};
-
-				scope.siguientePregunta = function() {
-					scope.id++;
-					scope.obtienePregunta();
-				}
-
-				scope.reset();
+	return {
+		obtienePregunta: function(id) {
+			if(id < preguntas.length) {
+				return preguntas[id];
+			} else {
+				return false;
 			}
 		}
-	});
-
-	app.factory('jueguitoEsquema', function() {
-		var preguntas = [
-			{
-				pregunta: "Cuánto es 2 + 2 ?",
-				opciones: ["3", "8", "4", "1"],
-				respuesta: 2
-			},
-			{
-				pregunta: "Cuánto es 5 + 5 ?",
-				opciones: ["98", "10", "2", "9"],
-				respuesta: 1
-			},
-			{
-				pregunta: "Cuánto vale Pi?",
-				opciones: ["1", "0", "89798", "3,1416"],
-				respuesta: 3
-			}
-		];
-
-		return {
-			obtienePregunta: function(id) {
-				if(id < preguntas.length) {
-					return preguntas[id];
-				} else {
-					return false;
-				}
-			}
-		};
-	});
-
-}]); //Controlador
+	};
+});
