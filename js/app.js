@@ -1,13 +1,11 @@
 var app = angular.module('Jueguito', []);
 
 
+
 // Minificación Segura
-Controlador.$inject = ['$scope', '$route', 'Item', 'items', 'utils', 'shade'];
+app.controller('Controlador', ['$scope', function($scope) {
 
-angular.module('Jueguito')
-	.controller('Controlador', Controlador);
-
-function Controlador($scope,$route,Item,items,utils,shade) {
+	$scope.message = 'todo bien!';
 
 	app.directive('jueguito', function(jueguitoEsquema) {
 		return {
@@ -93,7 +91,5 @@ function Controlador($scope,$route,Item,items,utils,shade) {
 			}
 		};
 	});
-}
 
-
-
+}]); //Controlador
