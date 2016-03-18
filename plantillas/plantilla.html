@@ -1,0 +1,33 @@
+<div ng-show="Avance">
+  <div ng-show="!seAcabo">
+    <h2 id="pregunta">{{pregunta}}</h2>
+    <ul id="opciones">
+      <li ng-repeat="opcion in opciones">
+        <label>
+          <input type="radio" name="respuesta" value="{{opcion}}">
+          {{opcion}}
+        </label>
+      </li>
+    </ul>
+  <button ng-click="checkRespuesta()" ng-show="modoRespuesta">Enviar</button>
+
+  <div ng-show="!modoRespuesta">
+  <button ng-click="siguientePregunta()" class="siguiente-pregunta">Siguiente</button>
+  <span ng-show="respCorrecta">Respuesta correcta!</span>
+  <span ng-show="!respCorrecta">Respuesta incorrecta :(</span>
+  </div>
+  </div>
+	<div ng-show="seAcabo">
+		<h2>Se acabó el juego</h2>
+		<button ng-click="reset()">Jugar de nuevo</button>
+	</div>
+
+	<div id="puntaje">
+		Puntuación: {{puntaje}}
+	</div>
+</div>
+
+<div class="intro" ng-show="!Avance">
+	<p>Bienvenid@s</p>
+	<button id="empiezaJuego" ng-click="empezar()">Jugar</button>
+</div>
